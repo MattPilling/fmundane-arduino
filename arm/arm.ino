@@ -88,10 +88,19 @@ void handleOpenDoor(){
   bool dooropen = digitalRead(D7) == 1;
  
    if (!dooropen){
+
+    /*
      Serial.write("M3\n");
      Serial.write("S300\n");
      delay(1400);
      Serial.write("S0\n");
+     */
+
+     //Pulse the relay and simulate a button press
+     digitalWrite(D0, 0);
+     delay(500);
+     digitalWrite(D0, 1);
+     
    }else{
      server.send(200, "application/json", "{\"success\":false, \"error\": \"door already open\"}");
    }
@@ -126,10 +135,10 @@ void handleCloseDoor(){
    }
    
    if (dooropen){
-     Serial.write("M3\n");
-     Serial.write("S300\n");
-     delay(1400);
-     Serial.write("S0\n");
+     //Pulse the relay and simulate a button press
+     digitalWrite(D0, 0);
+     delay(500);
+     digitalWrite(D0, 1);
    }else{
      server.send(200, "application/json", "{\"success\":false, \"error\":\"door already closed\"}");
      return;
@@ -154,6 +163,8 @@ void handleCloseDoor(){
 void setup() {
   Serial.begin(115200);
   pinMode(A0,INPUT);
+  pinMode(D0, OUTPUT);
+  digitalWrite(D0, 1);
   pinMode(D5, INPUT_PULLUP);
   pinMode(D6, INPUT_PULLUP);
   pinMode(D7, INPUT_PULLUP);
